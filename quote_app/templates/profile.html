@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <title>User Quotes</title>
+</head>
+<body>
+    <h2>{{ user.first_name }} {{ user.last_name }}'s Quotes</h2>
+    <a href="/quotes">Back</a>
+    <form action="/logout" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Logout">
+    </form>
+    {% for quote in quotes.all %}
+        <p>{{ quote.quoter }}: "{{ quote.content }}"</p><br>
+    {% endfor %}
+</body>
+</html>

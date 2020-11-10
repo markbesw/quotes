@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotes Board</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+</head>
+<body>
+    <h2>Welcome, {{request.session.user_name}}!</h2>
+    <a href="/myaccount/{{request.session.user_id}}">Edit My Account</a>
+    <form action="/logout" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Logout">
+    </form>
+    {% if messages %}
+        <ul>
+            {% for error in messages %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <form action="/create_quote" method="post">
+        {% csrf_token %}
+        <h3>Add a Quote!</h3>
+        <textarea name="content" cols="50" rows="6"></textarea>
+        Author<input type="text" name="quoter">
+        <input type="submit" value="Create Quote">
+    </form>
+    <br>
+    <h2>Quotes</h2>
+    {% for quote in all_quotes %}
+        <div class="quote">
+            {{ quote.quoter }}: "{{ quote.content }}"
+            <br>
+            Posted by <a href="/user/{{quote.poster.id}}">{{ quote.poster.first_name }} {{ quote.poster.last_name }}</a>
+            {% if request.session.user_id == quote.poster.id %}
+                <a href="/delete_post/{{quote.id}}">Delete</a>
+            {% endif %}
+        </div>
+    {% endfor %}
+</body>
+</html>

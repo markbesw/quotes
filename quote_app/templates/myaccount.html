@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Account</title>
+</head>
+<body>
+    <h3>Edit My Account</h3>
+    <a href="/quotes">Go Back</a>
+    <form action="/logout" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Logout">
+    </form>
+    <!-- {{ request.session.acct_error }} v2 replaces this line with lines 16-22. -->
+    {% if messages %}
+        <ul>
+            {% for error in messages %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    <br>
+    <form action="/update_account" method="post">
+        {% csrf_token %}
+        First Name: <input type="text" name="f_n" value="{{user.first_name}}">
+        Last Name: <input type="text" name="l_n"  value="{{user.last_name}}">
+        Email: <input type="text" name="email"  value="{{user.email}}">
+        <input type="submit" value="Update">
+    </form>
+</body>
+</html>
